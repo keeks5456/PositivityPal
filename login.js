@@ -1,36 +1,63 @@
 
-(function(){
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
-var uiConfig = {
-  callbacks: {
-    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-      // User successfully signed in.
-      // Return type determines whether we continue the redirect automatically
-      // or whether we leave that to developer to handle.
-      return true;
-    },
-    uiShown: function() {
-      // The widget is rendered.
-      // Hide the loader.
-      document.getElementById('loader').style.display = 'none';
-    }
-  },
-  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-  signInFlow: 'popup',
-  signInSuccessUrl: 'https://www.kommunicate.io/livechat-demo?appId=bc86772b23aeaef3eee125d1e7126e12&botIds=positivity-pal-9m5rb&assignee=positivity-pal-9m5rb',
-  signInOptions: [
-    // Leave the lines as is for the providers you want to offer your users.
-    // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-    // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-     firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    // firebase.auth.PhoneAuthProvider.PROVIDER_ID
-  ],
-  // Terms of service url.
-  tosUrl: 'login.html',
-};
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDFmMqDWXrnXSNgPKiKAeHcxV_nXQ5840I",
+    authDomain: "tablet-tab.firebaseapp.com",
+    projectId: "tablet-tab",
+    storageBucket: "tablet-tab.appspot.com",
+    messagingSenderId: "523003992278",
+    appId: "1:523003992278:web:87af6f240ca90b09dc1177"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
-ui.start('#firebaseui-auth-container', uiConfig);
+  const auth = firebase.auth();
 
-});
+  function signUp(){
+    var email = document.getElementById('email');
+    var password = document.getElementById('password');
+
+    firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
+  .then((userCredential) => {
+    // Signed in 
+    var user = userCredential.user;
+    alert("You have been signed up!");
+    // ...
+  })
+  .catch((error) => {
+    alert(error.code);
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    
+  });
+
+
+  }
+
+  function signIn(){
+    var email = document.getElementById('email');
+    var password = document.getElementById('password');
+
+    // const promise = auth.signInWithEmailAndPassword(email.value, password.value);
+    // promise.catch(e=>alert(e.message));
+
+    var authFlag = true;
+
+
+    firebase.auth().signInWithEmailAndPassword(email.value, password.value)
+          .then((userCredential) => {
+      // Signed in
+      // alert("Signed In");
+        var user = userCredential.user;
+        window.location.replace("https://www.kommunicate.io/livechat-demo?appId=bc86772b23aeaef3eee125d1e7126e12&botIds=positivity-pal-9m5rb&assignee=positivity-pal-9m5rb");
+  
+    })
+    .catch((error) => {
+      alert(error.code);
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    });
+
+
+
+  }; 
